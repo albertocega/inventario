@@ -5,6 +5,24 @@ class RecipesController < ApplicationController
   # GET /recipes.json
   def index
     @recipes = Recipe.all
+    @values = Hash.new
+    
+    @recipes.each do |r|
+      
+       parts = Part.where( recipe_id: r.id).find_each
+       price = 0
+       
+       parts.each do |p|
+        
+        ingredient= Ingredient.find(p.ingredient_id)
+        price = price + ingredient.cost*p.amount
+        
+       end
+      
+      @values[r.id]= price
+      
+    end
+    
   end
 
   # GET /recipes/1
@@ -14,6 +32,8 @@ class RecipesController < ApplicationController
     @part = Part.new
     find_parts
     find_ingredients
+    calculate_price
+    
   end
 
   # GET /recipes/new
@@ -81,6 +101,21 @@ class RecipesController < ApplicationController
       @parts = Part.where( recipe_id: params[:id]).find_each
       
     end
+    
+    def calculate_price
+      
+      @price = 0
+      @parts.each do |p|
+        
+        ingredient= Ingredient.find(p.ingredient_id)
+        
+        @price = @price + ingredient.cost*p.amount
+        
+      end
+      
+    end
+      
+    
     
     def find_ingredients
       

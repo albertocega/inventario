@@ -12,6 +12,7 @@
       <tr>
             <th>Amount</th>
             <th>Ingredient</th>
+            <th>Cost</th>
             <th></th>
         <th></th>
         <th></th>
@@ -22,6 +23,7 @@
       <%= content_tag_for(:tr, @parts) do |part| %>
             <td><%= part.amount %></td>
             <td><%= part.ingredient.name %></td>
+            <td><%= part.ingredient.cost* part.amount %></td>
             <td><%= link_to 'Show', part %></td>
         <td><%= link_to 'Edit', edit_part_path(part) %></td>
         <td><%= link_to 'Destroy', part, method: :delete, data: { confirm: 'Are you sure?' } %></td>
